@@ -7,7 +7,7 @@ public class Shuffle {
 	int total_attempts = 0;
 	int favourable_attempts = 0;
 
-	public void shuffle_cards(ArrayList<Card> cards, ArrayList<Player> players) {
+	public void shuffle_cards(ArrayList<Card> cards, ArrayList<Player> players, int num) {
 		Random rand = new Random();
 		for (int i = 0; i < cards.size(); i++) // shuffling cards
 		{
@@ -19,9 +19,11 @@ public class Shuffle {
 			cards.set(i, temp);
 		}
 
-		for (int i = 0; i < players.size(); i++) { // clearing all cards contained by each player so that we can assign
-													// them cards again
-			players.get(i).c.clear();
+		if (num > 0) { // initially players don't have cards so no need to run this for loop initially
+			for (int i = 0; i < players.size(); i++) { // clearing all cards contained by each player so that we can
+														// assign them cards again
+				players.get(i).c.clear();
+			}
 		}
 
 		int k = 0;
@@ -55,11 +57,13 @@ public class Shuffle {
 	}
 
 	public float check_X_times(int times, ArrayList<Card> cards, ArrayList<Player> players) {
+		int num = 0;
 		while (times > 0) { // run this loop 100000 times
-			shuffle_cards(cards, players);
+			shuffle_cards(cards, players, num);
 			check(players);
 			total_attempts += 1;
 			times--;
+			num++;
 		}
 		System.out.println("FAVOURABLE : " + favourable_attempts);
 		System.out.println("TOTAL : " + total_attempts);
